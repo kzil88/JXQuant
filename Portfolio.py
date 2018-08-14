@@ -18,7 +18,7 @@ def get_portfolio(stock_list,state_dt,para_window):
     # 建评估时间序列, para_window参数代表回测窗口长度
     model_test_date_start = (datetime.datetime.strptime(state_dt, '%Y-%m-%d') - datetime.timedelta(days=para_window)).strftime(
         '%Y%m%d')
-    model_test_date_end = state_dt
+    model_test_date_end = (datetime.datetime.strptime(state_dt, "%Y-%m-%d")).strftime('%Y%m%d')
     df = pro.trade_cal(exchange_id='', is_open=1, start_date=model_test_date_start, end_date=model_test_date_end)
     date_temp = list(df.iloc[:, 1])
     model_test_date_seq = [(datetime.datetime.strptime(x, "%Y%m%d")).strftime('%Y-%m-%d') for x in date_temp]
