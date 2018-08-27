@@ -27,11 +27,6 @@ def filter_main(stock_new,state_dt,predict_dt,poz):
     #后买入
     for stock_index in range(len(stock_new)):
         deal_buy = Deal.Deal(state_dt)
-        #if poz[stock_index]*deal_buy.cur_money_rest >= :
-            # sql_ban_pool = "select distinct stock_code from ban_list"
-            # cursor.execute(sql_ban_pool)
-            # done_ban_pool = cursor.fetchall()
-            # ban_list = [x[0] for x in done_ban_pool]
 
         # # 如果模型f1分值低于50则不买入
         # sql_f1_check = "select * from good_pool_all a where a.stock_code = '%s' and a.state_dt < '%s' order by a.state_dt desc limit 1"%(stock_new[stock_index],state_dt)
