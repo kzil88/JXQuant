@@ -9,7 +9,7 @@ def model_eva(stock,state_dt,para_window,para_dc_window):
     # 建立数据库连接，设置tushare token
     db = pymysql.connect(host='127.0.0.1', user='root', passwd='admin', db='stock', charset='utf8')
     cursor = db.cursor()
-    ts.set_token('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+    ts.set_token('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
     pro = ts.pro_api()
     # 建评估时间序列, para_window参数代表回测窗口长度
     model_test_date_start = (datetime.datetime.strptime(state_dt, '%Y-%m-%d') - datetime.timedelta(days=para_window)).strftime(
@@ -29,6 +29,8 @@ def model_eva(stock,state_dt,para_window,para_dc_window):
         model_test_new_end = model_test_date_seq[d]
         try:
             dc = DC.data_collect(stock, model_test_new_start, model_test_new_end)
+            if len(set(dc.data_target)) <= 1:
+                continue
         except Exception as exp:
             print("DC Errrrr")
             return_flag = 1
@@ -67,7 +69,10 @@ def model_eva(stock,state_dt,para_window,para_dc_window):
         sql_resu_recall_mon = "select count(*) from model_ev_mid a where a.resu_real is not null and a.resu_real = 1"
         cursor.execute(sql_resu_recall_mon)
         recall_mon = cursor.fetchall()[0][0]
-        recall = recall_son / recall_mon
+        if recall_mon == 0:
+            acc = recall = acc_neg = f1 = 0
+        else:
+            recall = recall_son / recall_mon
         # 计算查准率
         sql_resu_acc_son = "select count(*) from model_ev_mid a where a.resu_real is not null and a.resu_predict = 1 and a.resu_real = 1"
         cursor.execute(sql_resu_acc_son)
@@ -110,9 +115,4 @@ def model_eva(stock,state_dt,para_window,para_dc_window):
     print(str(state_dt) + '   Precision : ' + str(acc) + '   Recall : ' + str(recall) + '   F1 : ' + str(f1) + '   Acc_Neg : ' + str(acc_neg))
     return 1
 
-if __name__ == '__main__':
-    stock_pool = ['002049.SZ']
-    for stock in stock_pool :
-        ans = model_eva(stock,'2018-03-01',90,365)
-    print('All Finished !!')
 
