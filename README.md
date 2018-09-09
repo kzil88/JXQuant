@@ -18,3 +18,4 @@ stock_stock_index.sql   ——   【策略回测】回测主函数里用到的�
 stock_model_ev_mid.sql   ——   【模型评估】模型评估过程中用到的中间表，用于暂存回测时间序列内的部分数据，并用于最终计算F1分值。
 stock_model_ev_resu.sql   ——   【模型评估】模型评估的结果表，用于存储股票在某个时间点上的F1分值。
 stock_my_stock_pool.sql   ——   【策略回测】当前股票资产详情表，主要字段为:持仓股票代码，成交均价，持仓量，持仓天数。
+stock_stock_all.sql   ——   【策略回测】股票每日行情数据表，包含所有股票的日线行情。
